@@ -19,7 +19,7 @@ if [ $# -eq 0 ]; then
     "run-shell '\"${BASH_SOURCE[0]}\" avaa_kappalehaku'"
 
   # Optimointi: poistutaan ennen funktioiden määrittelyä.
-  exit
+  exit 0
 fi
 
 
