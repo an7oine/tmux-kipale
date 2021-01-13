@@ -170,16 +170,28 @@ end tell
 EOF
   )
 }
+selaa_listaa() {
+  valitse_kappale < <( osascript <<EOF
+tell application "$OHJELMA"
+  set tulokset to "Lista: " & name of current playlist & "\n\n\n\n"
+  repeat with tulos in (tracks of current playlist)
+    set tulokset to tulokset & artist of tulos & ": " & name of tulos & "\n" & persistent id of tulos & "\n"
+  end repeat
+  return tulokset
+end tell
+EOF
+  )
+}
 
 
 # Valikko.
 nayta_valikko() { # Avaa Musiikki, ellei se ole jo auki.
   open -g "${BINAARI}"
 
-  local silmukointi sekoitus esittaja kappale albumi
+  local silmukointi sekoitus esittaja kappale albumi lista
   {
     read -r silmukointi; read -r sekoitus;
-    read -r esittaja; read -r kappale; read -r albumi;
+    read -r esittaja; read -r kappale; read -r albumi; read -r lista;
   } < <( osascript 2>&1 <<EOF
 tell application "$OHJELMA"
   set (sr, se) to (song repeat, shuffle enabled)
@@ -188,11 +200,17 @@ tell application "$OHJELMA"
   on error
     set (e, k, a) to ("", "", "")
   end try
+  try
+    set l to name of current playlist
+  on error
+    set l to ""
+  end try
   log sr
   log se
   log e
   log k
   log a
+  log l
 end tell
 EOF
   )
@@ -219,6 +237,8 @@ EOF
       "run -b '\"${BASH_SOURCE[0]}\" selaa_esittajaa'" \
     "$( [ -z "$albumi" ] && echo "-" )#[nodim]Levy: $albumi" "d" \
       "run -b '\"${BASH_SOURCE[0]}\" selaa_albumia'" \
+    "$( [ -z "$lista" ] && echo "-" )#[nodim]Lista: $lista" "f" \
+      "run -b '\"${BASH_SOURCE[0]}\" selaa_listaa'" \
     "" \
     "Toisto/tauko" Space "run -b '\"${BASH_SOURCE[0]}\" valikko toisto_tauko'" \
     "Edellinen"    h "run -b '\"${BASH_SOURCE[0]}\" valikko edellinen'" \
@@ -231,7 +251,7 @@ EOF
     "$sekoitus_nimio" 3 \
       "run -b '\"${BASH_SOURCE[0]}\" valikko vaihda_sekoitus $sekoitus'" \
     "" \
-    "$( [ -n "$hakunappain" ] && echo "[$hakunappain] " )Hae..." "f" \
+    "$( [ -n "$hakunappain" ] && echo "[$hakunappain] " )Hae..." "m" \
       "run -b '\"${BASH_SOURCE[0]}\" avaa_kappalehaku'"
 }
 
