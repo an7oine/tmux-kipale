@@ -111,6 +111,7 @@ valitse_kappale() {
       "run -b '\"${BASH_SOURCE[0]}\" soita_kappale $id'"
     )
     ((pikanappain+=1))
+    [ $pikanappain -lt "${#pikanappaimet}" ] || break
   done
   if [ "${#arr[@]}" -eq 0 ]; then
     tmux display-message "Kappaletta ei löytynyt!"
