@@ -119,7 +119,7 @@ valitse_kappale() {
     testaa() {
       for n; do echo \"$n\"; done
     }
-    tmux display-menu -T "#[align=centre fg=green]Valitse kappale" -x R -y P "${arr[@]}"
+    tmux display-menu -T "#[fg=colour17,bg=colour190,align=right] Valitse kappale " -x R -y P "${arr[@]}"
   fi
 }
 
@@ -212,7 +212,7 @@ EOF
 
   hakunappain=$(tmux show-option -gqv "@kipale-hakunappain")
 
-  tmux display-menu -T "#[align=centre fg=green]Musiikki" -x R -y P \
+  tmux display-menu -T "#[fg=colour17,bg=colour190 align=right] KIPALE " -x R -y P \
     "" \
     "-#[nodim]Kappale: $kappale" "" "" \
     "$( [ -z "$esittaja" ] && echo "-" )#[nodim]Esittäjä: $esittaja" "s" \
