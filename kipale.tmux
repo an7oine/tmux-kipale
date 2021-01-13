@@ -84,8 +84,6 @@ tell application "$OHJELMA"
 end tell
 EOF
   )
-  #local esittaja=$(komento artist of the current track)
-  #local kappale=$(komento name of the current track)
   [ -n "$esittaja" -o -n "$kappale" ] \
   && echo "♫ ${esittaja:-–}: ${kappale:-–} "
 }
