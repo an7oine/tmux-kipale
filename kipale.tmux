@@ -75,12 +75,14 @@ esittaja_ja_kappale() {
   local kappale
   { read -r esittaja; read -r kappale; } < <( osascript <<EOF
 tell application "$OHJELMA"
-  return (artist of current track & "\n" & name of current track)
-  set tulokset to ""
-  repeat with tulos in (tracks whose artist contains "$*" or name contains "$*" or album contains "$*")
-    set tulokset to tulokset & artist of tulos & ": " & name of tulos & "\n" & persistent id of tulos & "\n"
-  end repeat
-  return tulokset
+  if it is running then
+    return (artist of current track & "\n" & name of current track)
+    set tulokset to ""
+    repeat with tulos in (tracks whose artist contains "$*" or name contains "$*" or album contains "$*")
+      set tulokset to tulokset & artist of tulos & ": " & name of tulos & "\n" & persistent id of tulos & "\n"
+    end repeat
+    return tulokset
+  end if
 end tell
 EOF
   )
