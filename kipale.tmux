@@ -5,8 +5,11 @@ if [ $# -eq 0 ]; then
 
   # Tilarivi.
   status_right=$(tmux show-option -gqv "status-right")
-  tmux set-option -g status-right \
-    "#(\"${BASH_SOURCE[0]}\" esittaja_ja_kappale)$status_right"
+  haku="#(\"${BASH_SOURCE[0]}\" esittaja_ja_kappale)"
+  [[ "$status_right" =~ "$haku" ]] || {
+    tmux set-option -g status-right \
+      "#(\"${BASH_SOURCE[0]}\" esittaja_ja_kappale)$status_right"
+  }
 
   # Valikkonäppäin.
   valikkonappain=$(tmux show-option -gqv "@kipale-valikkonappain")
